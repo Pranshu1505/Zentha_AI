@@ -87,6 +87,33 @@ Respond in clean markdown with headings: "Professional Summary", "Improved Bulle
   res.json({ aiSuggestions: aiText, resume });
 });
 
+// Pulls just the "Professional Summary" paragraph out of the AI markdown
+// (used as a fallback when the user didn't type their own summary).
+const extractAISummary = (aiText) => {
+  if (!aiText) return "";
+  const lines = aiText.split("\n");
+  let capturing = false;
+  const out = [];
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    const isHeading = /^#{1,6}\s|^\*\*[^*]+\*\*\s*$/.test(line);
+
+    if (isHeading) {
+      if (/professional summary/i.test(line)) {
+        capturing = true;
+        continue;
+      } else if (capturing) {
+        break;
+      }
+    } else if (capturing && line) {
+      out.push(line);
+    }
+  }
+
+  return out.join(" ").replace(/[#*_`]/g, "").trim();
+};
+
 // @route GET /api/resumes/:id/export-pdf
 export const exportResumePdf = asyncHandler(async (req, res) => {
   const resume = await Resume.findOne({ _id: req.params.id, user: req.user._id });
@@ -119,10 +146,10 @@ export const exportResumePdf = asyncHandler(async (req, res) => {
     doc.font("Helvetica-Bold").fontSize(12).fillColor(dark).text(title.toUpperCase(), { characterSpacing: 0.5 });
     doc.moveDown(0.35);
   };
-
-  if (resume.summary) {
+  const summaryText = resume.summary || extractAISummary(resume.aiSuggestions);
+  if (summaryText) {
     sectionTitle("Professional Summary");
-    doc.font("Helvetica").fontSize(10.5).fillColor("#333333").text(resume.summary, { align: "left" });
+    doc.font("Helvetica").fontSize(10.5).fillColor("#333333").text(summaryText, { align: "left" });
     doc.moveDown(0.8);
   }
 
