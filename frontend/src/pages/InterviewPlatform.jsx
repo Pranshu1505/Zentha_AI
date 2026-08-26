@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../api/axios.js";
 import ReactMarkdown from "react-markdown";
 
@@ -12,6 +12,43 @@ const InterviewPlatform = () => {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [finishing, setFinishing] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onresult = (event) => {
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      setAnswerDraft((prev) => (prev ? prev + " " : "") + transcript.trim());
+    };
+
+    recognition.onend = () => setIsListening(false);
+    recognitionRef.current = recognition;
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      alert("Voice input isn't supported in this browser. Try Chrome or Edge.");
+      return;
+    }
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
 
   const fetchPast = async () => {
     const { data } = await api.get("/interviews");
@@ -124,7 +161,15 @@ const InterviewPlatform = () => {
           </div>
         ) : (
           <div>
-            <textarea className="input-field" rows={5} placeholder="Type your answer..." value={answerDraft} onChange={(e) => setAnswerDraft(e.target.value)} />
+            <textarea className="input-field" rows={5} placeholder="Type your answer, or use the mic to speak..." value={answerDraft} onChange={(e) => setAnswerDraft(e.target.value)} />
+            <button
+              type="button"
+              onClick={toggleListening}
+              className={`mt-2 text-sm px-3 py-1.5 rounded-lg border ${isListening ? "border-red-500 text-red-400 bg-red-500/10" : "border-border text-muted hover:border-accent/50"}`}
+            >
+              {isListening ? "⏹ Stop recording" : "🎙 Speak your answer"}
+            </button>
+            <br />
             <button onClick={submitAnswer} className="btn-primary mt-3" disabled={submitting}>{submitting ? "Evaluating..." : "Submit Answer"}</button>
           </div>
         )}
