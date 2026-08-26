@@ -58,6 +58,18 @@ const ResumeBuilder = () => {
     }
   };
 
+  const handleDownloadPdf = async (id, title) => {
+    const res = await api.get(`/resumes/${id}/export-pdf`, { responseType: "blob" });
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${(title || "resume").replace(/\s+/g, "_")}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  };
+
   const handleDelete = async (id) => {
     await api.delete(`/resumes/${id}`);
     setResumes(resumes.filter((r) => r._id !== id));
@@ -110,9 +122,14 @@ const ResumeBuilder = () => {
             <div className="card p-5">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-display font-semibold text-white">{selected.title}</h3>
-                <button onClick={() => handleEnhance(selected._id)} className="btn-primary text-sm" disabled={enhancing}>
-                  {enhancing ? "Enhancing..." : "✨ AI Enhance"}
-                </button>
+                <div className="flex gap-2">
+                  <button onClick={() => handleDownloadPdf(selected._id, selected.title)} className="btn-secondary text-sm">
+                    ⬇ Download PDF
+                  </button>
+                  <button onClick={() => handleEnhance(selected._id)} className="btn-primary text-sm" disabled={enhancing}>
+                    {enhancing ? "Enhancing..." : "✨ AI Enhance"}
+                  </button>
+                </div>
               </div>
               {selected.aiSuggestions ? (
                 <div className="prose-ai text-sm"><ReactMarkdown>{selected.aiSuggestions}</ReactMarkdown></div>
