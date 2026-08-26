@@ -55,6 +55,38 @@ export const getProfile = asyncHandler(async (req, res) => {
   res.json(req.user);
 });
 
+// @route PUT /api/auth/profile
+// Updates name and/or password for the logged-in user
+export const updateProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  if (req.body.name) user.name = req.body.name;
+
+  if (req.body.newPassword) {
+    if (user.password) {
+      if (!req.body.currentPassword || !(await user.matchPassword(req.body.currentPassword))) {
+        res.status(401);
+        throw new Error("Current password is incorrect");
+      }
+    }
+    user.password = req.body.newPassword;
+  }
+
+  await user.save();
+
+  res.json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    token: generateToken(user._id),
+  });
+});
+
 export const googleAuth = asyncHandler(async (req, res) => {
   const { idToken } = req.body;
   if (!idToken) {
