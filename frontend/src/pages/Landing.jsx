@@ -56,8 +56,26 @@ const Landing = () => {
           ))}
         </div>
       </section>
+
+      <footer className="relative z-10 border-t border-border">
+        <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <span className="font-display text-lg font-bold text-white">Zentha <span className="text-accent">AI</span></span>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted">
+            <Link to="/register" className="hover:text-text transition-colors">Get started</Link>
+            <Link to="/login" className="hover:text-text transition-colors">Log in</Link>
+            <a href="#" className="hover:text-text transition-colors">Privacy</a>
+            <a href="#" className="hover:text-text transition-colors">Terms</a>
+          </div>
+
+          <p className="text-xs text-muted">© {new Date().getFullYear()} Zentha AI. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 };
 
 export default Landing;
+    
