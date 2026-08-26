@@ -40,6 +40,9 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input className="input-field" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <input className="input-field" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <div className="text-right -mt-2">
+            <Link to="/forgot-password" className="text-xs text-accent">Forgot password?</Link>
+          </div>
           <button className="btn-primary w-full" disabled={loading}>{loading ? "Logging in..." : "Log in"}</button>
         </form>
         <p className="text-sm text-muted mt-5 text-center">

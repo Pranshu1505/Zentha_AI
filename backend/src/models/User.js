@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: function () { return !this.googleId; }, minlength: 6 },
     googleId: { type: String, unique: true, sparse: true },
     avatar: { type: String, default: "" },
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
   },
   { timestamps: true }
 );

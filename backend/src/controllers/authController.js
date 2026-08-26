@@ -1,7 +1,9 @@
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { OAuth2Client } from "google-auth-library";
 import User from "../models/User.js";
+import { sendPasswordResetEmail } from "../services/emailService.js";
 
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
@@ -93,4 +95,55 @@ export const googleAuth = asyncHandler(async (req, res) => {
     avatar: user.avatar,
     token: generateToken(user._id),
   });
+});
+
+
+// @route POST /api/auth/forgot-password
+export const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.json({ message: "If an account exists for that email, a reset link has been sent." });
+  }
+
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  user.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+  user.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
+  await user.save();
+
+  const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+
+  try {
+    await sendPasswordResetEmail(user.email, resetUrl);
+    res.json({ message: "If an account exists for that email, a reset link has been sent." });
+  } catch (err) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+    res.status(500);
+    throw new Error("Email could not be sent. Please try again later.");
+  }
+});
+
+// @route PUT /api/auth/reset-password/:token
+export const resetPassword = asyncHandler(async (req, res) => {
+  const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("Reset link is invalid or has expired");
+  }
+
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
+
+  res.json({ message: "Password reset successful. You can now log in." });
 });
