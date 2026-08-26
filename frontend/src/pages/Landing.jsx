@@ -27,11 +27,11 @@ const Landing = () => {
         </div>
       </header>
 
-      <section className="relative z-10 max-w-4xl mx-auto text-center px-6 pt-20 pb-16">
+      <section className="relative z-10 max-w-4xl mx-auto text-center px-6 pt-12 sm:pt-20 pb-16">
         <span className="inline-block px-3 py-1 rounded-full border border-accent/40 text-accent text-xs font-medium mb-6">
           5 AI tools · One dashboard
         </span>
-        <h1 className="font-display text-5xl md:text-6xl font-bold leading-tight text-white">
+        <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold leading-tight text-white">
           Everything you build, write, review, and hire with —
           <span className="text-accent"> powered by one AI core.</span>
         </h1>
