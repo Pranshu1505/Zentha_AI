@@ -29,6 +29,11 @@ export const AuthProvider = ({ children }) => {
     setUser(data);
     return data;
   };
+  
+  const updateLocalUser = (data) => {
+    localStorage.setItem("zentha_ai_user", JSON.stringify(data));
+    setUser(data);
+  };
 
   const logout = () => {
     localStorage.removeItem("zentha_ai_user");
@@ -36,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, googleLogin, logout }}>
+    <AuthContext.Provider value={{ user, login, register, googleLogin, updateLocalUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

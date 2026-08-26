@@ -14,6 +14,7 @@ import InterviewPlatform from "./pages/InterviewPlatform.jsx";
 import ChatbotBuilder from "./pages/ChatbotBuilder.jsx";
 import CodeReviewer from "./pages/CodeReviewer.jsx";
 import PdfChat from "./pages/PdfChat.jsx";
+import Profile from "./pages/Profile.jsx";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="chatbot" element={<ChatbotBuilder />} />
             <Route path="code-reviewer" element={<CodeReviewer />} />
             <Route path="pdf-chat" element={<PdfChat />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
 
           <Route path="*" element={<Landing />} />

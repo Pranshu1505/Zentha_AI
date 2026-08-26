@@ -9,6 +9,7 @@ const navItems = [
   { to: "/dashboard/chatbot", label: "Website Chatbot", icon: "💬" },
   { to: "/dashboard/code-reviewer", label: "Code Reviewer", icon: "🧠" },
   { to: "/dashboard/pdf-chat", label: "PDF Chat", icon: "📚" },
+  { to: "/dashboard/profile", label: "Profile", icon: "👤" },
 ];
 
 const DashboardLayout = () => {
