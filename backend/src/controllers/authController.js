@@ -87,6 +87,27 @@ export const updateProfile = asyncHandler(async (req, res) => {
   });
 });
 
+// @route PUT /api/auth/avatar
+export const updateAvatar = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    res.status(400);
+    throw new Error("No image uploaded");
+  }
+
+  const user = await User.findById(req.user._id);
+  const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+  user.avatar = base64Image;
+  await user.save();
+
+  res.json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    token: generateToken(user._id),
+  });
+});
+
 export const googleAuth = asyncHandler(async (req, res) => {
   const { idToken } = req.body;
   if (!idToken) {
