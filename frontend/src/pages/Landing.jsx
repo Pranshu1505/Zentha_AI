@@ -11,7 +11,7 @@ const modules = [
 
 const Landing = () => {
   return (
-    <div className="min-h-screen bg-base text-text font-body overflow-hidden relative">
+    <div className="bg-base text-text font-body overflow-hidden relative">
       {/* ambient glow */}
       <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/20 blur-[120px]" />
       <div className="absolute top-96 -left-40 w-[400px] h-[400px] rounded-full bg-accent2/10 blur-[120px]" />
