@@ -50,7 +50,7 @@ const Landing = () => {
           {modules.map((m, i) => (
             <div key={m.name} className={`card p-3 sm:p-6 ${i === 0 ? "md:col-span-2" : ""}`}>
               <div className="text-base sm:text-2xl mb-1 sm:mb-3">{m.icon}</div>
-              <h3 className="font-display font-semibold text-white mb-0.5 sm:mb-1 text-xs sm:text-base">{m.name}</h3>
+              <h3 className="font-display font-semibold text-white-100 mb-0.5 sm:mb-1 text-xs sm:text-base">{m.name}</h3>
               <p className="text-[11px] sm:text-sm text-muted">{m.desc}</p>
             </div>
           ))}
