@@ -45,7 +45,7 @@ const Landing = () => {
         </div>
       </section>
 
-      <section className="relative z-10 max-w-5xl mx-auto px-6 pb-6 sm:pb-14">
+      <section className="relative text-white z-10 max-w-5xl mx-auto px-6 pb-6 sm:pb-14">
         <div className="grid md:grid-cols-3 gap-2 sm:gap-4">
           {modules.map((m, i) => (
             <div key={m.name} className={`card p-3 sm:p-6 ${i === 0 ? "md:col-span-2" : ""}`}>
