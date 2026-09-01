@@ -73,7 +73,7 @@ const PdfChat = () => {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold bg-white text-white mb-1">📚 AI PDF Chat</h1>
+      <h1 className="font-display text-2xl font-bold color-white text-white mb-1">📚 AI PDF Chat</h1>
       <p className="text-muted mb-8">Upload a PDF and ask questions — answers are grounded in the document content.</p>
 
       <div className="grid lg:grid-cols-3 gap-6">
