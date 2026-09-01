@@ -11,12 +11,11 @@ const modules = [
 
 const Landing = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-base text-text font-body overflow-hidden relative">
+    <div className="bg-base text-text font-body overflow-hidden relative">
       {/* ambient glow */}
       <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/20 blur-[120px]" />
       <div className="absolute top-96 -left-40 w-[400px] h-[400px] rounded-full bg-accent2/10 blur-[120px]" />
 
-      <div className="flex-1">
       <header className="relative z-10 max-w-6xl mx-auto flex items-center justify-between px-6 py-3 sm:py-5">
         <div className="flex items-center gap-2">
           <Logo size={24} />
@@ -57,7 +56,7 @@ const Landing = () => {
           ))}
         </div>
       </section>
-      </div>
+      
 
       <footer className="relative z-10 border-t border-border">
         <div className="max-w-6xl mx-auto px-6 py-3 sm:py-8 flex flex-col md:flex-row items-center justify-between gap-2 sm:gap-6">
