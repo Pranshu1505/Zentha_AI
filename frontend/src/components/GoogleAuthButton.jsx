@@ -27,7 +27,8 @@ const GoogleAuthButton = () => {
     window.google.accounts.id.renderButton(buttonRef.current, {
       theme: "filled_black",
       size: "large",
-      width: 320,
+      width: Math.min(containerWidth, 400),
+      // width: 320,
       text: "continue_with",
       shape: "rectangular",
     });
@@ -41,7 +42,9 @@ const GoogleAuthButton = () => {
     );
   }
 
-  return <div ref={buttonRef} className="flex justify-center" />;
+  return <div ref={buttonRef} className="w-full flex justify-center overflow-hidden" />;
 };
 
 export default GoogleAuthButton;
+
+
