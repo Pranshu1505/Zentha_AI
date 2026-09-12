@@ -86,7 +86,7 @@ const ChatbotBuilder = () => {
             <>
               <div className="card p-4">
                 <h3 className="font-display font-semibold text-white mb-2 text-sm">Embed on your website</h3>
-                <pre className="text-xs bg-base border border-border rounded-lg p-3 overflow-x-auto text-accent">{embedCode}</pre>
+                <pre className="text-xs bg-canvas border border-border rounded-lg p-3 overflow-x-auto text-accent">{embedCode}</pre>
               </div>
 
               <div className="card p-4">

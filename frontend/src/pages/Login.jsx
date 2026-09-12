@@ -26,7 +26,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base px-6">
+    <div className="min-h-screen flex items-center justify-center bg-canvas px-6">
       <div className="card w-full max-w-sm p-8">
         <h1 className="font-display text-2xl font-bold text-white mb-1">Welcome back</h1>
         <p className="text-muted text-sm mb-6">Log in to your Zentha AI dashboard</p>

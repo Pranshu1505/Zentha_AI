@@ -18,7 +18,7 @@ const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex bg-base text-text font-body">
+    <div className="min-h-screen flex bg-canvas text-text font-body">
       <div className="md:hidden fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 bg-surface border-b border-border">
         <span className="font-display text-lg font-bold text-white">Zentha <span className="text-accent">AI</span></span>
         <button
