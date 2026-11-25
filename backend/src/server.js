@@ -20,7 +20,6 @@ const app = express();
 const publicCors = cors({
   origin: "*",
   methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
 });
 
 // Baaki sab routes: sirf aapka frontend
