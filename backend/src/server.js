@@ -15,7 +15,23 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL || "*" }));
+// app.use(cors({ origin: process.env.CLIENT_URL || "*" }));
+// Widget ke public routes: kisi bhi website se call ho sakte hain
+const publicCors = cors({
+  origin: "*",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+});
+
+// Baaki sab routes: sirf aapka frontend
+const privateCors = cors({ origin: process.env.CLIENT_URL || "*" });
+
+app.use((req, res, next) =>
+  req.path.startsWith("/api/chatbots/public")
+    ? publicCors(req, res, next)
+    : privateCors(req, res, next)
+);
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public")); // serves /widget.js for the embeddable chatbot
