@@ -10,7 +10,7 @@
     position: "fixed", bottom: "20px", right: "20px", width: "56px", height: "56px",
     borderRadius: "50%", background: "#7C5CFC", color: "#fff", display: "flex",
     alignItems: "center", justifyContent: "center", fontSize: "24px", cursor: "pointer",
-    boxShadow: "0 4px 14px rgba(0,0,0,0.25)", zIndex: 999999,
+    boxShadow: "0 4px 14px rgba(0,0,0,0.25)", zIndex: 999999, 
   });
 
   const panel = document.createElement("div");
@@ -51,6 +51,7 @@
       background: role === "user" ? "#7C5CFC" : "#f1f1f1",
       color: role === "user" ? "#fff" : "#111",
       marginLeft: role === "user" ? "auto" : "0",
+      whiteSpace: "pre-wrap",
     });
     messages.appendChild(m);
     messages.scrollTop = messages.scrollHeight;
@@ -70,18 +71,35 @@
     panel.style.display = panel.style.display === "none" ? "flex" : "none";
   };
 
+  // async function send() {
+  //   const text = input.value.trim();
+  //   if (!text) return;
+  //   addMessage("user", text);
+  //   input.value = "";
+  //   const res = await fetch(`${apiBase}/api/chatbots/public/${publicKey}/message`, {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ message: text, sessionId }),
+  //   });
+  //   const data = await res.json();
+  //   addMessage("assistant", data.reply || "Sorry, something went wrong.");
+  // }
   async function send() {
     const text = input.value.trim();
     if (!text) return;
     addMessage("user", text);
     input.value = "";
-    const res = await fetch(`${apiBase}/api/chatbots/public/${publicKey}/message`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text, sessionId }),
-    });
-    const data = await res.json();
-    addMessage("assistant", data.reply || "Sorry, something went wrong.");
+    try {
+      const res = await fetch(`${apiBase}/api/chatbots/public/${publicKey}/message`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, sessionId }),
+      });
+      const data = await res.json();
+      addMessage("assistant", data.reply || "Sorry, something went wrong.");
+    } catch (err) {
+      addMessage("assistant", "Server se connect nahi ho pa raha. Thodi der baad try karo.");
+    }
   }
 
   sendBtn.onclick = send;
